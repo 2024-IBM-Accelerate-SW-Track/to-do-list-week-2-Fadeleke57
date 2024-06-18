@@ -32,6 +32,12 @@ test('test that new-item-textfield is an textfield ', () => {
   expect(element).toBeInTheDocument();
 });
 
+test('test that Radio component is a radio', () => {
+  render(<App/>, container);
+  const element = screen.getByTestId('new-item-radio-group');
+  expect(element).toBeInTheDocument();
+});
+
 test('renders Todos component with empty todo list', () => {
   render(<App />, container);
   expect(screen.getByText("You have no todo's left")).toBeInTheDocument();

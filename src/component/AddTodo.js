@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import './AddTodo.css';
 
 class AddTodo extends Component {
   // Create a local react state of the this component with a content property set to nothing.
@@ -7,6 +8,7 @@ class AddTodo extends Component {
     super();
     this.state = {
       content: "",
+      date: "",
     };
   }
   // The handleChange function updates the react state with the new input value provided from the user.
@@ -14,7 +16,8 @@ class AddTodo extends Component {
   // into the text field.
   handleChange = (event) => {
     this.setState({
-      content: event.target.value,
+      [event.target.name]: event.target.value,
+      date: Date().toLocaleString("en-US")
     });
   };
   // The handleSubmit function collects the forms input and puts it into the react state.
@@ -27,6 +30,9 @@ class AddTodo extends Component {
       this.props.addTodo(this.state);
       this.setState({
         content: "",
+        date: "",
+        location: "",
+        urgency: "moderate"
       });
     }
   };
@@ -39,24 +45,58 @@ class AddTodo extends Component {
       // 3. The return should also include a button with the handleSubmit function from above that is passed into
       // an OnClick event.
       // 4. The value of the text field also should reflect the local state of this component.
-      <div>
+      <div className="form-container">
+      <div style={{display:"flex", gap:"20px"}}>
         <TextField
+          name="location"
+          label="Location"
+          variant="outlined"
+          onChange={this.handleChange}
+          value={this.state.location}
+        />
+        <TextField
+          name="content"
           label="Add New Item"
           variant="outlined"
           onChange={this.handleChange}
           value={this.state.content}
           data-testid="new-item-textfield"
         />
-        <Button
-          style={{ marginLeft: "10px" }}
-          onClick={this.handleSubmit}
-          variant="contained"
-          color="primary"
-          data-testid="new-item-button"
-        >
-          Add
-        </Button>
       </div>
+      <RadioGroup
+        name="urgency"
+        value={this.state.urgency}
+        onChange={this.handleChange}
+        row
+        style={{ marginTop: "20px" }}
+        data-testid="new-item-radio-group"
+      >
+      <FormControlLabel
+        value="important"
+        control={<Radio />}
+        label="Important"
+      />
+      <FormControlLabel
+        value="moderate"
+        control={<Radio />}
+        label="Moderate"
+      />
+      <FormControlLabel
+        value="unimportant"
+        control={<Radio />}
+        label="Unimportant"
+      />
+      </RadioGroup>
+      <Button
+        style={{ marginLeft: "10px" }}
+        onClick={this.handleSubmit}
+        variant="contained"
+        color="primary"
+        data-testid="new-item-button"
+      >
+        Add
+      </Button>
+    </div>
     );
   }
 }
